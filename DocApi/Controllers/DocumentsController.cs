@@ -36,6 +36,17 @@ namespace DocApi.Controllers
             return Ok(documents);
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetDocument(int id)
+        {
+            if (_docUserRepository.DocumentNotFound(id)) return NotFound();
+
+            var document = await _docUserRepository.GetDocumentAsync(id);
+
+            return Ok(document);
+        }
+
         //[HttpGet("{courseId}", Name = "GetCourseForAuthor")]
         //public ActionResult<CourseDto> GetCourseForAuthor(Guid authorId, Guid courseId)
         //{

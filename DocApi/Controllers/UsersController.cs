@@ -32,6 +32,15 @@ namespace DocApi.Controllers
             var user = await _docUserRepository.GetUsersAsync();
             return Ok(user);
         }
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetUser(int id)
+        {
+            var user = await _docUserRepository.GetUserAsync(id);
+            if (user == null) return NotFound();
+
+            return Ok(user);
+        }
 
         //[HttpGet()]
         //[HttpHead]
@@ -51,7 +60,7 @@ namespace DocApi.Controllers
         //    {
         //        return NotFound();
         //    }
-             
+
         //    return Ok(_mapper.Map<AuthorDto>(authorFromRepo));
         //}
 

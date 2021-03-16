@@ -9,7 +9,11 @@ namespace DocApi.Repositories
     public interface IDocUserRepository
     {
         Task<IEnumerable<Entities.Document>> GetDocumentsAsync();
+        Task<Document> GetDocumentAsync(int id);
+        public bool DocumentNotFound(int id);
         Task<IEnumerable<User>> GetUsersAsync();
+        public Task<User> GetUserAsync(int id);
+        bool UserNotFound(int id);
         //IEnumerable<Document> GetDocumentsByUser(int userId);
         //Document GetDocument(int userId, int documentId);
         //void AddDocument(Guid userId, Document document);

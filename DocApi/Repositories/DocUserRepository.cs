@@ -21,9 +21,25 @@ namespace DocApi.Repositories
         {
             return await _context.Documents.ToListAsync();
         }
+        public async Task<Document> GetDocumentAsync(int id)
+        {
+            return await _context.Documents.FirstOrDefaultAsync(c => c.Id == id);
+        }
+        public bool DocumentNotFound(int id)
+        {
+            return (_context.Documents.Find(id) == null);
+        }
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
             return await _context.Users.ToListAsync();
+        }
+        public async Task<User> GetUserAsync(int id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(c => c.Id == id);
+        }
+        public bool UserNotFound(int id)
+        {
+            return (_context.Users.Find(id) == null);
         }
         //public IEnumerable<Document> GetAllDocuments()
         //{
