@@ -2,24 +2,26 @@
 using DocApi.Entities;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DocApi.Repositories
 {
     public interface IDocUserRepository
-    {    
-        IEnumerable<Course> GetCourses(Guid authorId);
-        Course GetCourse(Guid authorId, Guid courseId);
-        void AddCourse(Guid authorId, Course course);
-        void UpdateCourse(Course course);
-        void DeleteCourse(Course course);
-        IEnumerable<Author> GetAuthors();
-        IEnumerable<Author> GetAuthors(AuthorsResourceParameters authorsResourceParameters);
-        Author GetAuthor(Guid authorId);
-        IEnumerable<Author> GetAuthors(IEnumerable<Guid> authorIds);
-        void AddAuthor(Author author);
-        void DeleteAuthor(Author author);
-        void UpdateAuthor(Author author);
-        bool AuthorExists(Guid authorId);
-        bool Save();
+    {
+        Task<IEnumerable<Entities.Document>> GetDocumentsAsync();
+        Task<IEnumerable<User>> GetUsersAsync();
+        //IEnumerable<Document> GetDocumentsByUser(int userId);
+        //Document GetDocument(int userId, int documentId);
+        //void AddDocument(Guid userId, Document document);
+        //void UpdateDocument(Document document);
+        //void DeleteDocument(Document document);
+        //IEnumerable<User> GetUsers();
+        //User GetUser(int userId);
+        //IEnumerable<User> GetUsers(IEnumerable<int> userIds);
+        //void AddUser(User user);
+        //void DeleteUser(User user);
+        //void UpdateUser(User user);
+        //bool UserExists(int userId);
+        //bool Save();
     }
 }

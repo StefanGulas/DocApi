@@ -10,78 +10,86 @@ using System.Threading.Tasks;
 namespace DocApi.Controllers
 {
     [ApiController]
-    [Route("api/authors")]
+    [Route("api/users")]
     public class UsersController : ControllerBase
     {
-        private readonly ICourseLibraryRepository _courseLibraryRepository;
+        private readonly IDocUserRepository _docUserRepository;
         private readonly IMapper _mapper;
 
-        public UsersController(ICourseLibraryRepository courseLibraryRepository,
+        public UsersController(IDocUserRepository docUserRepository,
             IMapper mapper)
         {
-            _courseLibraryRepository = courseLibraryRepository ??
-                throw new ArgumentNullException(nameof(courseLibraryRepository));
+            _docUserRepository = docUserRepository ??
+                throw new ArgumentNullException(nameof(docUserRepository));
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpGet()]
-        [HttpHead]
-        public ActionResult<IEnumerable<AuthorDto>> GetAuthors(
-            [FromQuery] AuthorsResourceParameters authorsResourceParameters)
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
         {
-            var authorsFromRepo = _courseLibraryRepository.GetAuthors(authorsResourceParameters);
-            return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo));
+            var user = await _docUserRepository.GetUsersAsync();
+            return Ok(user);
         }
 
-        [HttpGet("{authorId}", Name ="GetAuthor")]
-        public IActionResult GetAuthor(Guid authorId)
-        {
-            var authorFromRepo = _courseLibraryRepository.GetAuthor(authorId);
+        //[HttpGet()]
+        //[HttpHead]
+        //public ActionResult<IEnumerable<AuthorDto>> GetAuthors(
+        //    [FromQuery] AuthorsResourceParameters authorsResourceParameters)
+        //{
+        //    var authorsFromRepo = _courseLibraryRepository.GetAuthors(authorsResourceParameters);
+        //    return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo));
+        //}
 
-            if (authorFromRepo == null)
-            {
-                return NotFound();
-            }
+        //[HttpGet("{authorId}", Name ="GetAuthor")]
+        //public IActionResult GetAuthor(Guid authorId)
+        //{
+        //    var authorFromRepo = _courseLibraryRepository.GetAuthor(authorId);
+
+        //    if (authorFromRepo == null)
+        //    {
+        //        return NotFound();
+        //    }
              
-            return Ok(_mapper.Map<AuthorDto>(authorFromRepo));
-        }
+        //    return Ok(_mapper.Map<AuthorDto>(authorFromRepo));
+        //}
 
-        [HttpPost]
-        public ActionResult<AuthorDto> CreateAuthor(AuthorForCreationDto author)
-        {
-            var authorEntity = _mapper.Map<Entities.Author>(author);
-            _courseLibraryRepository.AddAuthor(authorEntity);
-            _courseLibraryRepository.Save();
+        //[HttpPost]
+        //public ActionResult<AuthorDto> CreateAuthor(AuthorForCreationDto author)
+        //{
+        //    var authorEntity = _mapper.Map<Entities.Author>(author);
+        //    _courseLibraryRepository.AddAuthor(authorEntity);
+        //    _courseLibraryRepository.Save();
 
-            var authorToReturn = _mapper.Map<AuthorDto>(authorEntity);
-            return CreatedAtRoute("GetAuthor",
-                new { authorId = authorToReturn.Id },
-                authorToReturn);
-        }
+        //    var authorToReturn = _mapper.Map<AuthorDto>(authorEntity);
+        //    return CreatedAtRoute("GetAuthor",
+        //        new { authorId = authorToReturn.Id },
+        //        authorToReturn);
+        //}
 
-        [HttpOptions]
-        public IActionResult GetAuthorsOptions()
-        {
-            Response.Headers.Add("Allow", "GET,OPTIONS,POST");
-            return Ok();
-        }
+        //[HttpOptions]
+        //public IActionResult GetAuthorsOptions()
+        //{
+        //    Response.Headers.Add("Allow", "GET,OPTIONS,POST");
+        //    return Ok();
+        //}
 
-        [HttpDelete("{authorId}")]
-        public ActionResult DeleteAuthor(Guid authorId)
-        {
-            var authorFromRepo = _courseLibraryRepository.GetAuthor(authorId);
+        //[HttpDelete("{authorId}")]
+        //public ActionResult DeleteAuthor(Guid authorId)
+        //{
+        //    var authorFromRepo = _courseLibraryRepository.GetAuthor(authorId);
 
-            if (authorFromRepo == null)
-            {
-                return NotFound();
-            }
+        //    if (authorFromRepo == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _courseLibraryRepository.DeleteAuthor(authorFromRepo);
+        //    _courseLibraryRepository.DeleteAuthor(authorFromRepo);
 
-            _courseLibraryRepository.Save();
+        //    _courseLibraryRepository.Save();
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
     }
 }
