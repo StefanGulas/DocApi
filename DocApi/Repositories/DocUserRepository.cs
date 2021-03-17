@@ -39,6 +39,18 @@ namespace DocApi.Repositories
 
             _context.Add(document);
         }
+        public void ChangeDocumentInDb(Document document)
+        {
+            _context.Update(document);
+            _context.SaveChanges();
+        }
+
+        public void DeleteDocumentInDb(Document document)
+        {
+            _context.Remove(document);
+            _context.SaveChanges();
+
+        }
 
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
