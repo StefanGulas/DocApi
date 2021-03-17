@@ -11,6 +11,8 @@ namespace DocApi.Repositories
         Task<IEnumerable<Entities.Document>> GetDocumentsAsync();
         Task<Document> GetDocumentAsync(int id);
         Task<IEnumerable<Document>> GetDocumentsByUserAsync(int userId);
+        void AddUser(Entities.User user);
+        Task<bool> SaveChangesAsync();
         public bool DocumentNotFound(int id);
         Task<IEnumerable<User>> GetUsersAsync();
         public Task<User> GetUserAsync(int id);

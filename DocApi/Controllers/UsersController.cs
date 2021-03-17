@@ -42,6 +42,16 @@ namespace DocApi.Controllers
             return Ok(user);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateUser(User user)
+        {
+            if (user.Nachname != null) _docUserRepository.AddUser(user);
+
+            await _docUserRepository.SaveChangesAsync();
+
+            return Ok();
+        }
+
         //[HttpGet()]
         //[HttpHead]
         //public ActionResult<IEnumerable<AuthorDto>> GetAuthors(

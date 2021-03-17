@@ -45,6 +45,16 @@ namespace DocApi.Repositories
         {
             return (_context.Users.Find(id) == null);
         }
+        public void AddUser(User user)
+        {
+            if (user == null) throw new ArgumentNullException(nameof(user));
+
+            _context.Add(user);
+        }
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _context.SaveChangesAsync() > 0);
+        }
         //public IEnumerable<Document> GetAllDocuments()
         //{
 

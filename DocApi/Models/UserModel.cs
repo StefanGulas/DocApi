@@ -9,6 +9,6 @@ namespace DocApi.Models
     {
         public int Id { get; set; }
         public string Nachname { get; set; } 
-        public string RoleName { get; set; }
+        public string RoleId { get; set; }
     }
 }
