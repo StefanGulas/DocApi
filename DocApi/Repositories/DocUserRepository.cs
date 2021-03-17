@@ -25,6 +25,10 @@ namespace DocApi.Repositories
         {
             return await _context.Documents.FirstOrDefaultAsync(c => c.Id == id);
         }
+        public async Task<IEnumerable<Document>> GetDocumentsByUserAsync(int userId)
+        {
+            return _context.Documents.Where(c => c.UserId == userId).ToList();
+        }
         public bool DocumentNotFound(int id)
         {
             return (_context.Documents.Find(id) == null);

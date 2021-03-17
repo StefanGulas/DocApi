@@ -47,6 +47,13 @@ namespace DocApi.Controllers
             return Ok(document);
         }
 
+        [HttpGet]
+        [Route("user/{userid}")]
+        public async Task<IActionResult> GetDocumentsByUser(int userid)
+        {
+            var documents = await _docUserRepository.GetDocumentsByUserAsync(userid);
+            return Ok(documents);
+        }
         //[HttpGet("{courseId}", Name = "GetCourseForAuthor")]
         //public ActionResult<CourseDto> GetCourseForAuthor(Guid authorId, Guid courseId)
         //{
