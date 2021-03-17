@@ -52,6 +52,30 @@ namespace DocApi.Controllers
             return Ok();
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult> ChangeUser(int id, User user)
+        {
+            if (user.Nachname == null) return NotFound();
+
+            var existingUser = await _docUserRepository.GetUserAsync(id);
+
+            if (user.Vorname != null) existingUser.Vorname = user.Vorname;
+            if (user.Id <= 0) existingUser.Id = user.Id;
+            if (user.Vorname != null) existingUser.Vorname = user.Vorname;
+            if (user.Password != null) existingUser.Password = user.Password;
+            _docUserRepository.ChangeUserInDb(existingUser);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(int id)
+        {
+            var document = await _docUserRepository.GetUserAsync(id);
+            if (document == null) return NotFound();
+            _docUserRepository.DeleteUserInDb(document);
+            return Ok();
+        }
         //[HttpGet()]
         //[HttpHead]
         //public ActionResult<IEnumerable<AuthorDto>> GetAuthors(

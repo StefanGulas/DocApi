@@ -20,6 +20,9 @@ namespace DocApi.Repositories
         public Task<User> GetUserAsync(int id);
         bool UserNotFound(int id);
         void AddUser(Entities.User user);
+        void ChangeUserInDb(Entities.User user);
+        void DeleteUserInDb(User user);
+
         //IEnumerable<Document> GetDocumentsByUser(int userId);
         //Document GetDocument(int userId, int documentId);
         //void AddDocument(Guid userId, Document document);

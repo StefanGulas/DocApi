@@ -74,6 +74,23 @@ namespace DocApi.Repositories
         {
             return (await _context.SaveChangesAsync() > 0);
         }
+
+        public async Task<bool> SaveChangesUserAsync()
+        {
+            return (await _context.SaveChangesAsync() > 0);
+        }
+        public void ChangeUserInDb(User user)
+        {
+            _context.Update(user);
+            _context.SaveChanges();
+        }
+
+        public void DeleteUserInDb(User user)
+        {
+            _context.Remove(user);
+            _context.SaveChanges();
+
+        }
         //public IEnumerable<Document> GetAllDocuments()
         //{
 

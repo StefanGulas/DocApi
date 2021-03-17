@@ -71,7 +71,7 @@ namespace DocApi.Controllers
             if (_docUserRepository.DocumentNotFound(id)) return NotFound();
 
             var existingDocument = await _docUserRepository.GetDocumentAsync(id);
-
+            existingDocument.Id = id;
             if (document.Name != null) existingDocument.Name = document.Name;
             if (document.Größe > 0) existingDocument.Größe = document.Größe;
             if (document.Typ != null) existingDocument.Typ = document.Typ;
@@ -81,17 +81,17 @@ namespace DocApi.Controllers
             return NoContent();
         }
 
-        //[Authorize]
-        //[HttpDelete("api/documents/{id}")]
-        //public async Task<ActionResult> DeleteDocument(int id)
-        //{
-        //    if (_documentRepository.DocumentNotFound(id)) return NotFound();
 
-        //    var document = await _documentRepository.GetDocumentAsync(id);
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteDocument(int id)
+        {
+            if (_docUserRepository.DocumentNotFound(id)) return NotFound();
 
-        //    _documentRepository.DeleteDocumentInDb(document);
-        //    return Ok();
-        //}
+            var document = await _docUserRepository.GetDocumentAsync(id);
+
+            _docUserRepository.DeleteDocumentInDb(document);
+            return Ok();
+        }
         //[HttpGet("{courseId}", Name = "GetCourseForAuthor")]
         //public ActionResult<CourseDto> GetCourseForAuthor(Guid authorId, Guid courseId)
         //{
