@@ -58,7 +58,7 @@ namespace DocApi.DbContexts
                     Nachname = "Schmid",
                     Email = "harald.schmid@test.de",
                     Password = null,
-                    RoleName = "User"
+                    RoleId = "1"
                 },
                 new User()
                 {
@@ -68,7 +68,7 @@ namespace DocApi.DbContexts
                     Nachname = "Huber",
                     Email = "heinz.huber@test.de",
                     Password = null,
-                    RoleName = "Admin"
+                    RoleId = "2"
                 },
                 new User()
                 {
@@ -78,7 +78,7 @@ namespace DocApi.DbContexts
                     Nachname = "Breitner",
                     Email = "heidi.breitner@test.de",
                     Password = null,
-                    RoleName = "Admin"
+                    RoleId = "2"
                 },
                 new User()
                 {
@@ -88,22 +88,25 @@ namespace DocApi.DbContexts
                     Nachname = "Klein",
                     Email = "martin.klein@test.de",
                     Password = null,
-                    RoleName = "User"
+                    RoleId = "1"
                 });
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Role>().HasData(
                 new Role()
                 {
+                    RoleId = 1,
                     RoleName = "User",
                     Beschreibung = "Mitarbeiter",
                 },
                 new Role()
                 {
+                    RoleId = 2,
                     RoleName = "Admin",
                     Beschreibung = "Administrator der Seite",
                 },
                 new Role()
                 {
+                    RoleId = 3,
                     RoleName = "Partner",
                     Beschreibung = "Externe Benutzer"
                 });
