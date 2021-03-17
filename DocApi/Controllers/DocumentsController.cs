@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DocApi.Entities;
 using DocApi.Models;
 using DocApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +54,16 @@ namespace DocApi.Controllers
         {
             var documents = await _docUserRepository.GetDocumentsByUserAsync(userid);
             return Ok(documents);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateDocument(Document document)
+        {
+            if (document.Name != null) _docUserRepository.AddDocument(document);
+
+            await _docUserRepository.SaveChangesAsync();
+
+            return Ok();
         }
         //[HttpGet("{courseId}", Name = "GetCourseForAuthor")]
         //public ActionResult<CourseDto> GetCourseForAuthor(Guid authorId, Guid courseId)

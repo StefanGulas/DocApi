@@ -33,6 +33,13 @@ namespace DocApi.Repositories
         {
             return (_context.Documents.Find(id) == null);
         }
+        public void AddDocument(Document document)
+        {
+            if (document == null) throw new ArgumentNullException(nameof(document));
+
+            _context.Add(document);
+        }
+
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
             return await _context.Users.ToListAsync();
