@@ -66,18 +66,24 @@ namespace DocApi.Repositories
         }
         public void AddUser(User user)
         {
-            if (user == null) throw new ArgumentNullException(nameof(user));
+            var newUser = new User();
+            newUser.Nachname = user.Nachname;
+            if (user.Anrede == "string" || user.Anrede == null) newUser.Anrede = "";
+            else newUser.Anrede = user.Anrede;
+            if (user.Email == "string" || user.Email == null) newUser.Email = "";
+            else newUser.Email = user.Email;
+            if (user.Password == "string" || user.Password == null) newUser.Password = "";
+            else newUser.Password = user.Password;
+            if (user.RoleId >= 0) newUser.RoleId = user.RoleId;
+            else newUser.RoleId = 1;
 
-            _context.Add(user);
-        }
-        public async Task<bool> SaveChangesAsync()
-        {
-            return (await _context.SaveChangesAsync() > 0);
+            _context.Add(newUser);
+            
         }
 
-        public async Task<bool> SaveChangesUserAsync()
+        public bool Save()
         {
-            return (await _context.SaveChangesAsync() > 0);
+            return (_context.SaveChanges() > 0);
         }
         public void ChangeUserInDb(User user)
         {
@@ -91,6 +97,24 @@ namespace DocApi.Repositories
             _context.SaveChanges();
 
         }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+               // dispose resources when needed
+            }
+        }
+
+        //public Task<bool> SaveChanges()
+        //{
+        //    throw new NotImplementedException();
+        //}
         //public IEnumerable<Document> GetAllDocuments()
         //{
 
@@ -262,18 +286,5 @@ namespace DocApi.Repositories
         //    return (_context.SaveChanges() >= 0);
         //}
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-               // dispose resources when needed
-            }
-        }
     }
 }

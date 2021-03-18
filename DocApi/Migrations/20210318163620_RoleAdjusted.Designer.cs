@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DocApi.Migrations
 {
     [DbContext(typeof(DocApiContext))]
-    [Migration("20210316173821_Initial")]
-    partial class Initial
+    [Migration("20210318163620_RoleAdjusted")]
+    partial class RoleAdjusted
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,6 +47,8 @@ namespace DocApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Documents");
 
                     b.HasData(
@@ -81,31 +83,39 @@ namespace DocApi.Migrations
 
             modelBuilder.Entity("DocApi.Entities.Role", b =>
                 {
-                    b.Property<string>("RoleName")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Beschreibung")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("RoleName");
+                    b.Property<string>("RoleName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Role");
+                    b.HasKey("RoleId");
+
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
                         {
-                            RoleName = "User",
-                            Beschreibung = "Mitarbeiter"
+                            RoleId = 1,
+                            Beschreibung = "Mitarbeiter",
+                            RoleName = "User"
                         },
                         new
                         {
-                            RoleName = "Admin",
-                            Beschreibung = "Administrator der Seite"
+                            RoleId = 2,
+                            Beschreibung = "Administrator der Seite",
+                            RoleName = "Admin"
                         },
                         new
                         {
-                            RoleName = "Partner",
-                            Beschreibung = "Externe Benutzer"
+                            RoleId = 3,
+                            Beschreibung = "Externe Benutzer",
+                            RoleName = "Partner"
                         });
                 });
 
@@ -129,18 +139,15 @@ namespace DocApi.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleName1")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Vorname")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleName1");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
 
@@ -151,7 +158,7 @@ namespace DocApi.Migrations
                             Anrede = "Herr",
                             Email = "harald.schmid@test.de",
                             Nachname = "Schmid",
-                            RoleName = "User",
+                            RoleId = 1,
                             Vorname = "Harald"
                         },
                         new
@@ -160,7 +167,7 @@ namespace DocApi.Migrations
                             Anrede = "Herr",
                             Email = "heinz.huber@test.de",
                             Nachname = "Huber",
-                            RoleName = "Admin",
+                            RoleId = 2,
                             Vorname = "Heinz"
                         },
                         new
@@ -169,7 +176,7 @@ namespace DocApi.Migrations
                             Anrede = "Frau",
                             Email = "heidi.breitner@test.de",
                             Nachname = "Breitner",
-                            RoleName = "Admin",
+                            RoleId = 2,
                             Vorname = "Heidi"
                         },
                         new
@@ -178,21 +185,37 @@ namespace DocApi.Migrations
                             Anrede = "Herr",
                             Email = "martin.klein@test.de",
                             Nachname = "Klein",
-                            RoleName = "User",
+                            RoleId = 1,
                             Vorname = "Martin"
                         });
+                });
+
+            modelBuilder.Entity("DocApi.Entities.Document", b =>
+                {
+                    b.HasOne("DocApi.Entities.User", null)
+                        .WithMany("Documents")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DocApi.Entities.User", b =>
                 {
                     b.HasOne("DocApi.Entities.Role", null)
                         .WithMany("Users")
-                        .HasForeignKey("RoleName1");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DocApi.Entities.Role", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("DocApi.Entities.User", b =>
+                {
+                    b.Navigation("Documents");
                 });
 #pragma warning restore 612, 618
         }

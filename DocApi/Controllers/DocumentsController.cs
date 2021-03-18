@@ -61,9 +61,9 @@ namespace DocApi.Controllers
         {
             if (document.Name != null) _docUserRepository.AddDocument(document);
 
-            await _docUserRepository.SaveChangesAsync();
+            if (_docUserRepository.Save()) return Ok();
 
-            return Ok();
+            return NoContent();
         }
         [HttpPut("{id}")]
         public async Task<ActionResult> ChangeDocument(int id, Document document)

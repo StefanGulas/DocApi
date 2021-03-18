@@ -2,6 +2,7 @@
 using DocApi.Entities;
 using DocApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,9 +46,10 @@ namespace DocApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser(User user)
         {
-            if (user.Nachname != null) _docUserRepository.AddUser(user);
-
-            await _docUserRepository.SaveChangesAsync();
+            if (user.Nachname is string)
+            {
+                _docUserRepository.AddUser(user);
+            }
 
             return Ok();
         }

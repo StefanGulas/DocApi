@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DocApi.Migrations
 {
     [DbContext(typeof(DocApiContext))]
-    [Migration("20210317153058_AdjustedEntities")]
-    partial class AdjustedEntities
+    [Migration("20210318152243_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -139,10 +139,7 @@ namespace DocApi.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("RoleId1")
+                    b.Property<int>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("Vorname")
@@ -150,7 +147,7 @@ namespace DocApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId1");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
 
@@ -161,7 +158,7 @@ namespace DocApi.Migrations
                             Anrede = "Herr",
                             Email = "harald.schmid@test.de",
                             Nachname = "Schmid",
-                            RoleId = "1",
+                            RoleId = 1,
                             Vorname = "Harald"
                         },
                         new
@@ -170,7 +167,7 @@ namespace DocApi.Migrations
                             Anrede = "Herr",
                             Email = "heinz.huber@test.de",
                             Nachname = "Huber",
-                            RoleId = "2",
+                            RoleId = 2,
                             Vorname = "Heinz"
                         },
                         new
@@ -179,7 +176,7 @@ namespace DocApi.Migrations
                             Anrede = "Frau",
                             Email = "heidi.breitner@test.de",
                             Nachname = "Breitner",
-                            RoleId = "2",
+                            RoleId = 2,
                             Vorname = "Heidi"
                         },
                         new
@@ -188,7 +185,7 @@ namespace DocApi.Migrations
                             Anrede = "Herr",
                             Email = "martin.klein@test.de",
                             Nachname = "Klein",
-                            RoleId = "1",
+                            RoleId = 1,
                             Vorname = "Martin"
                         });
                 });
@@ -206,7 +203,9 @@ namespace DocApi.Migrations
                 {
                     b.HasOne("DocApi.Entities.Role", null)
                         .WithMany("Users")
-                        .HasForeignKey("RoleId1");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DocApi.Entities.Role", b =>
