@@ -17,7 +17,7 @@ namespace DocApi.Entities
         public string Email { get; set; }
         public string Password { get; set; }
         public int RoleId { get; set; }
-        public ICollection<Document> Documents { get; set; }
+        public ICollection<Document> Documents { get; set; } = new List<Document>();
 
 
     }

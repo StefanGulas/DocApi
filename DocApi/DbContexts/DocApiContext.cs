@@ -6,6 +6,10 @@ namespace DocApi.DbContexts
 {
     public class DocApiContext : DbContext
     {
+        public DocApiContext(DbContextOptions<DocApiContext> options) 
+            : base(options)
+        {
+        }
         public DbSet<Document> Documents { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -13,11 +17,19 @@ namespace DocApi.DbContexts
 
 
 
-        public DocApiContext(DbContextOptions<DocApiContext> options) 
-            : base(options)
-        {
-        }
 
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<User>()
+        //     .HasMany(s => s.Documents)
+        //     .WithMany(b => b.Users)
+        //     .UsingEntity<BattleSamurai>
+        //      (bs => bs.HasOne<Battle>().WithMany(),
+        //       bs => bs.HasOne<Samurai>().WithMany())
+        //     .Property(bs => bs.DateJoined)
+        //     .HasDefaultValueSql("getdate()");
+
+        //}
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
@@ -38,7 +50,7 @@ namespace DocApi.DbContexts
         //            Name = "Vorderrad",
         //            Größe = 10000,
         //            Typ = "CAD",
-        //            ZeitpunktDesHochladens = new DateTime (2021, 01, 04, 11, 20, 40),
+        //            ZeitpunktDesHochladens = new DateTime(2021, 01, 04, 11, 20, 40),
         //            UserId = 1
         //        },
         //        new Document()
@@ -51,7 +63,7 @@ namespace DocApi.DbContexts
         //            (2020, 04, 04, 10, 20, 40),
         //            UserId = 1
         //        });
-           
+
         //    modelBuilder.Entity<User>().HasData(
         //        new User()
         //        {
@@ -113,6 +125,7 @@ namespace DocApi.DbContexts
         //            RoleName = "Partner",
         //            Beschreibung = "Externe Benutzer"
         //        });
+        //    base.OnModelCreating(modelBuilder);
         //}
     }
 }

@@ -51,23 +51,18 @@ namespace DocApi.Controllers
                 _docUserRepository.AddUser(user);
             }
 
-            return Ok();
+            return Ok(user);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult> ChangeUser(int id, User user)
         {
-            if (user.Nachname == null) return NotFound();
+            if (_docUserRepository.UserNotFound(id)) return NotFound();
 
             var existingUser = await _docUserRepository.GetUserAsync(id);
+            _docUserRepository.ChangeUserInDb(user, existingUser);
 
-            if (user.Vorname != null) existingUser.Vorname = user.Vorname;
-            if (user.Id <= 0) existingUser.Id = user.Id;
-            if (user.Vorname != null) existingUser.Vorname = user.Vorname;
-            if (user.Password != null) existingUser.Password = user.Password;
-            _docUserRepository.ChangeUserInDb(existingUser);
-
-            return NoContent();
+            return Ok(user);
         }
 
         [HttpDelete("{id}")]

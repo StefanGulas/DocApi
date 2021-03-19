@@ -8,7 +8,7 @@ namespace DocApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Role",
+                name: "Roles",
                 columns: table => new
                 {
                     RoleId = table.Column<int>(type: "int", nullable: false)
@@ -18,7 +18,7 @@ namespace DocApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Role", x => x.RoleId);
+                    table.PrimaryKey("PK_Roles", x => x.RoleId);
                 });
 
             migrationBuilder.CreateTable(
@@ -38,9 +38,9 @@ namespace DocApi.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Role_RoleId",
+                        name: "FK_Users_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "Role",
+                        principalTable: "Roles",
                         principalColumn: "RoleId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -68,47 +68,6 @@ namespace DocApi.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Role",
-                columns: new[] { "RoleId", "Beschreibung", "RoleName" },
-                values: new object[] { 1, "Mitarbeiter", "User" });
-
-            migrationBuilder.InsertData(
-                table: "Role",
-                columns: new[] { "RoleId", "Beschreibung", "RoleName" },
-                values: new object[] { 2, "Administrator der Seite", "Admin" });
-
-            migrationBuilder.InsertData(
-                table: "Role",
-                columns: new[] { "RoleId", "Beschreibung", "RoleName" },
-                values: new object[] { 3, "Externe Benutzer", "Partner" });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "Anrede", "Email", "Nachname", "Password", "RoleId", "Vorname" },
-                values: new object[,]
-                {
-                    { 1, "Herr", "harald.schmid@test.de", "Schmid", null, 1, "Harald" },
-                    { 4, "Herr", "martin.klein@test.de", "Klein", null, 1, "Martin" },
-                    { 2, "Herr", "heinz.huber@test.de", "Huber", null, 2, "Heinz" },
-                    { 3, "Frau", "heidi.breitner@test.de", "Breitner", null, 2, "Heidi" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Documents",
-                columns: new[] { "Id", "Größe", "Name", "Typ", "UserId", "ZeitpunktDesHochladens" },
-                values: new object[] { 1, 10000, "Vorderrad", "CAD", 1, new DateTime(2021, 1, 4, 11, 20, 40, 0, DateTimeKind.Unspecified) });
-
-            migrationBuilder.InsertData(
-                table: "Documents",
-                columns: new[] { "Id", "Größe", "Name", "Typ", "UserId", "ZeitpunktDesHochladens" },
-                values: new object[] { 2, 10000, "Vorderrad", "CAD", 1, new DateTime(2021, 1, 4, 11, 20, 40, 0, DateTimeKind.Unspecified) });
-
-            migrationBuilder.InsertData(
-                table: "Documents",
-                columns: new[] { "Id", "Größe", "Name", "Typ", "UserId", "ZeitpunktDesHochladens" },
-                values: new object[] { 3, 12000, "Hinterrad", "CAD", 1, new DateTime(2020, 4, 4, 10, 20, 40, 0, DateTimeKind.Unspecified) });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Documents_UserId",
                 table: "Documents",
@@ -129,7 +88,7 @@ namespace DocApi.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Role");
+                name: "Roles");
         }
     }
 }

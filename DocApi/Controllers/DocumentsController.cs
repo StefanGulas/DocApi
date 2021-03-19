@@ -59,11 +59,11 @@ namespace DocApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateDocument(Document document)
         {
-            if (document.Name != null) _docUserRepository.AddDocument(document);
-
-            if (_docUserRepository.Save()) return Ok();
-
-            return NoContent();
+            if (document.Name is string)
+            {
+                _docUserRepository.AddDocument(document);
+            }      
+            return Ok();
         }
         [HttpPut("{id}")]
         public async Task<ActionResult> ChangeDocument(int id, Document document)
@@ -71,12 +71,7 @@ namespace DocApi.Controllers
             if (_docUserRepository.DocumentNotFound(id)) return NotFound();
 
             var existingDocument = await _docUserRepository.GetDocumentAsync(id);
-            existingDocument.Id = id;
-            if (document.Name != null) existingDocument.Name = document.Name;
-            if (document.Größe > 0) existingDocument.Größe = document.Größe;
-            if (document.Typ != null) existingDocument.Typ = document.Typ;
-            if (document.UserId > 0) existingDocument.UserId = document.UserId;
-            _docUserRepository.ChangeDocumentInDb(existingDocument);
+            _docUserRepository.ChangeDocumentInDb(document, existingDocument);
 
             return NoContent();
         }

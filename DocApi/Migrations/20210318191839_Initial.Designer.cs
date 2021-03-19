@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DocApi.Migrations
 {
     [DbContext(typeof(DocApiContext))]
-    [Migration("20210318163620_RoleAdjusted")]
-    partial class RoleAdjusted
+    [Migration("20210318191839_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,35 +50,6 @@ namespace DocApi.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Documents");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Größe = 10000,
-                            Name = "Vorderrad",
-                            Typ = "CAD",
-                            UserId = 1,
-                            ZeitpunktDesHochladens = new DateTime(2021, 1, 4, 11, 20, 40, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Größe = 10000,
-                            Name = "Vorderrad",
-                            Typ = "CAD",
-                            UserId = 1,
-                            ZeitpunktDesHochladens = new DateTime(2021, 1, 4, 11, 20, 40, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Größe = 12000,
-                            Name = "Hinterrad",
-                            Typ = "CAD",
-                            UserId = 1,
-                            ZeitpunktDesHochladens = new DateTime(2020, 4, 4, 10, 20, 40, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("DocApi.Entities.Role", b =>
@@ -97,26 +68,6 @@ namespace DocApi.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            RoleId = 1,
-                            Beschreibung = "Mitarbeiter",
-                            RoleName = "User"
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            Beschreibung = "Administrator der Seite",
-                            RoleName = "Admin"
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            Beschreibung = "Externe Benutzer",
-                            RoleName = "Partner"
-                        });
                 });
 
             modelBuilder.Entity("DocApi.Entities.User", b =>
@@ -150,44 +101,6 @@ namespace DocApi.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Anrede = "Herr",
-                            Email = "harald.schmid@test.de",
-                            Nachname = "Schmid",
-                            RoleId = 1,
-                            Vorname = "Harald"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Anrede = "Herr",
-                            Email = "heinz.huber@test.de",
-                            Nachname = "Huber",
-                            RoleId = 2,
-                            Vorname = "Heinz"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Anrede = "Frau",
-                            Email = "heidi.breitner@test.de",
-                            Nachname = "Breitner",
-                            RoleId = 2,
-                            Vorname = "Heidi"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Anrede = "Herr",
-                            Email = "martin.klein@test.de",
-                            Nachname = "Klein",
-                            RoleId = 1,
-                            Vorname = "Martin"
-                        });
                 });
 
             modelBuilder.Entity("DocApi.Entities.Document", b =>

@@ -35,12 +35,38 @@ namespace DocApi.Repositories
         }
         public void AddDocument(Document document)
         {
-            if (document == null) throw new ArgumentNullException(nameof(document));
+            var newDocument = new Document();
+            newDocument.Name = document.Name;
+            if (document.Typ == "string" || document.Typ == null)  newDocument.Typ = "";
+            else newDocument.Typ = document.Typ;
+            if (document.ZeitpunktDesHochladens.Year == 0) newDocument.ZeitpunktDesHochladens = new(2021,01,01);
+            else newDocument.ZeitpunktDesHochladens = document.ZeitpunktDesHochladens;
+            if (newDocument.Größe >= 0) newDocument.Größe = document.Größe;
+            else newDocument.Größe = 100;
+            if (document.UserId > 0) newDocument.UserId = document.UserId;
+            else newDocument.UserId = 1;
 
-            _context.Add(document);
+            _context.Documents.Add(newDocument);
+            _context.SaveChanges();
+
+
+            //_context.Documents.Add(new Document
+            //{
+            //    Name = newDocument.Name,
+            //    Größe = newDocument.Größe,
+            //    Typ = newDocument.Typ,
+            //    ZeitpunktDesHochladens = newDocument.ZeitpunktDesHochladens,
+            //    UserId = newDocument.UserId
+            //});
         }
-        public void ChangeDocumentInDb(Document document)
+        public void ChangeDocumentInDb(Document document, Document existingDocument)
         {
+            existingDocument.Id = document.Id;
+            if (document.Name is string) existingDocument.Name = document.Name;
+            if (document.Größe > 0) existingDocument.Größe = document.Größe;
+            if (document.Typ is string) existingDocument.Typ = document.Typ;
+            if (document.UserId > 0) existingDocument.UserId = document.UserId;
+
             _context.Update(document);
             _context.SaveChanges();
         }
@@ -74,10 +100,12 @@ namespace DocApi.Repositories
             else newUser.Email = user.Email;
             if (user.Password == "string" || user.Password == null) newUser.Password = "";
             else newUser.Password = user.Password;
-            if (user.RoleId >= 0) newUser.RoleId = user.RoleId;
+            if (user.RoleId > 0) newUser.RoleId = user.RoleId;
             else newUser.RoleId = 1;
 
-            _context.Add(newUser);
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
+            
             
         }
 
@@ -85,8 +113,14 @@ namespace DocApi.Repositories
         {
             return (_context.SaveChanges() > 0);
         }
-        public void ChangeUserInDb(User user)
+        public void ChangeUserInDb(User user, User existingUser)
         {
+            existingUser.Id = user.Id;
+            if (user.Vorname is string) existingUser.Vorname = user.Vorname;
+            if (user.Nachname is string) existingUser.Nachname = user.Nachname;
+            if (user.Password is string) existingUser.Password = user.Password;
+            if (user.RoleId > 0) existingUser.RoleId = user.RoleId;
+            
             _context.Update(user);
             _context.SaveChanges();
         }
