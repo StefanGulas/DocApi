@@ -16,12 +16,20 @@ namespace DocApi.Repositories
         public void AddDocument(Document document);
         void ChangeDocumentInDb(Document document, Document existingDocument);
         void DeleteDocumentInDb(Document document);
+
         Task<IEnumerable<User>> GetUsersAsync();
         public Task<User> GetUserAsync(int id);
         bool UserNotFound(int id);
         void AddUser(Entities.User user);
         void ChangeUserInDb(User user, User existingUser);
         void DeleteUserInDb(User user);
+
+        Task<IEnumerable<Role>> GetRolesAsync();
+        public Task<Role> GetRoleAsync(int id);
+        bool RoleNotFound(int id);
+        void AddRole(Role role);
+        void ChangeRoleInDb(Role role, Role existingRole);
+        void DeleteRoleInDb(Role role);
 
         //IEnumerable<Document> GetDocumentsByUser(int userId);
         //Document GetDocument(int userId, int documentId);

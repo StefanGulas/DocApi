@@ -69,7 +69,7 @@ namespace DocApi.Controllers
         public async Task<ActionResult> ChangeDocument(int id, Document document)
         {
             if (_docUserRepository.DocumentNotFound(id)) return NotFound();
-
+            document.Id = 0;
             var existingDocument = await _docUserRepository.GetDocumentAsync(id);
             _docUserRepository.ChangeDocumentInDb(document, existingDocument);
 

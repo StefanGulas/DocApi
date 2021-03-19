@@ -116,18 +116,59 @@ namespace DocApi.Repositories
         public void ChangeUserInDb(User user, User existingUser)
         {
             existingUser.Id = user.Id;
+            if (user.Anrede is string) existingUser.Anrede = user.Anrede;
             if (user.Vorname is string) existingUser.Vorname = user.Vorname;
             if (user.Nachname is string) existingUser.Nachname = user.Nachname;
             if (user.Password is string) existingUser.Password = user.Password;
             if (user.RoleId > 0) existingUser.RoleId = user.RoleId;
             
-            _context.Update(user);
+            //_context.Update(existingUser);
             _context.SaveChanges();
         }
 
         public void DeleteUserInDb(User user)
         {
             _context.Remove(user);
+            _context.SaveChanges();
+
+        }
+
+        public async Task<IEnumerable<Role>> GetRolesAsync()
+        {
+            return await _context.Roles.ToListAsync();
+        }
+        public async Task<Role> GetRoleAsync(int id)
+        {
+            return await _context.Roles.FirstOrDefaultAsync(c => c.RoleId == id);
+        }
+        public bool RoleNotFound(int id)
+        {
+            return (_context.Roles.Find(id) == null);
+        }
+        public void AddRole(Role role)
+        {
+            var newRole = new Role();
+            newRole.RoleName = role.RoleName;
+            if (role.Beschreibung == "string" || role.Beschreibung == null) newRole.Beschreibung = "";
+
+            _context.Roles.Add(newRole);
+            _context.SaveChanges();
+
+
+        }
+
+        public void ChangeRoleInDb(Role role, Role existingRole)
+        {
+            existingRole.RoleId = role.RoleId;
+            if (role.RoleName is string) existingRole.RoleName = role.RoleName;
+            if (role.Beschreibung is string) existingRole.Beschreibung = role.Beschreibung;
+
+            _context.SaveChanges();
+        }
+
+        public void DeleteRoleInDb(Role role)
+        {
+            _context.Remove(role);
             _context.SaveChanges();
 
         }

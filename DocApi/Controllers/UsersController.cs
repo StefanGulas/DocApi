@@ -15,15 +15,11 @@ namespace DocApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IDocUserRepository _docUserRepository;
-        private readonly IMapper _mapper;
 
-        public UsersController(IDocUserRepository docUserRepository,
-            IMapper mapper)
+        public UsersController(IDocUserRepository docUserRepository)
         {
             _docUserRepository = docUserRepository ??
                 throw new ArgumentNullException(nameof(docUserRepository));
-            _mapper = mapper ??
-                throw new ArgumentNullException(nameof(mapper));
         }
 
 
@@ -58,7 +54,7 @@ namespace DocApi.Controllers
         public async Task<ActionResult> ChangeUser(int id, User user)
         {
             if (_docUserRepository.UserNotFound(id)) return NotFound();
-
+            user.Id = 0;
             var existingUser = await _docUserRepository.GetUserAsync(id);
             _docUserRepository.ChangeUserInDb(user, existingUser);
 
