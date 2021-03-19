@@ -1,15 +1,7 @@
-﻿using AutoMapper;
-using DocApi.Entities;
-using DocApi.Models;
+﻿using DocApi.Entities;
 using DocApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DocApi.Controllers
@@ -19,15 +11,11 @@ namespace DocApi.Controllers
     public class DocumentsController : ControllerBase
     {
         private readonly IDocUserRepository _docUserRepository;
-        private readonly IMapper _mapper;
 
-        public DocumentsController(IDocUserRepository docUserRepository,
-            IMapper mapper)
+        public DocumentsController(IDocUserRepository docUserRepository)
         {
             _docUserRepository = docUserRepository ??
                 throw new ArgumentNullException(nameof(docUserRepository));
-            _mapper = mapper ??
-                throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]

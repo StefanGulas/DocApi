@@ -1,6 +1,4 @@
-﻿using DocApi.DbContexts;
-using DocApi.Entities;
-using System;
+﻿using DocApi.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
