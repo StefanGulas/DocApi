@@ -1,4 +1,5 @@
 ﻿using DocApi.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -26,7 +27,7 @@ namespace DocApi.Repositories
         public Task<Role> GetRoleAsync(int id);
         bool RoleNotFound(int id);
         void AddRole(Role role);
-        void ChangeRoleInDb(Role role, Role existingRole);
+        public Task<JsonPatchDocument<Role>> ChangeRoleInDb(int id, JsonPatchDocument<Role> role);
         void DeleteRoleInDb(Role role);
 
     }

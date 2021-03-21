@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DocApi
 {
@@ -34,6 +35,14 @@ namespace DocApi
             services.AddDbContext<DocApiContext>(o => o.UseSqlServer(connectionString));
 
             services.AddScoped<IDocUserRepository, DocUserRepository>();
+
+            services.AddControllers().AddNewtonsoftJson();
+
+            services.Configure<MvcNewtonsoftJsonOptions>(opts =>
+            {
+                opts.SerializerSettings.NullValueHandling
+                = Newtonsoft.Json.NullValueHandling.Ignore;
+            });
 
         }
 

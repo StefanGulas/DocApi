@@ -1,5 +1,7 @@
 ﻿using DocApi.DbContexts;
 using DocApi.Entities;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -49,15 +51,6 @@ namespace DocApi.Repositories
             _context.Documents.Add(newDocument);
             _context.SaveChanges();
 
-
-            //_context.Documents.Add(new Document
-            //{
-            //    Name = newDocument.Name,
-            //    Größe = newDocument.Größe,
-            //    Typ = newDocument.Typ,
-            //    ZeitpunktDesHochladens = newDocument.ZeitpunktDesHochladens,
-            //    UserId = newDocument.UserId
-            //});
         }
         public void ChangeDocumentInDb(Document document, Document existingDocument)
         {
@@ -157,13 +150,16 @@ namespace DocApi.Repositories
 
         }
 
-        public void ChangeRoleInDb(Role role, Role existingRole)
+        public async Task<JsonPatchDocument<Role>> ChangeRoleInDb(int id, JsonPatchDocument<Role> role)
         {
-            existingRole.RoleId = role.RoleId;
-            if (role.RoleName is string) existingRole.RoleName = role.RoleName;
-            if (role.Beschreibung is string) existingRole.Beschreibung = role.Beschreibung;
+            var existingRole = await _context.Roles.FindAsync(id);
+            if(existingRole != null)
+            {
+                role.ApplyTo(existingRole);
+                _context.SaveChanges();
+            }
 
-            _context.SaveChanges();
+            return role;
         }
 
         public void DeleteRoleInDb(Role role)

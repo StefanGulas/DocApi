@@ -1,5 +1,6 @@
 ﻿using DocApi.Entities;
 using DocApi.Repositories;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -46,15 +47,13 @@ namespace DocApi.Controllers
             return Ok(role);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> ChangeRole(int id, Role role)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> ChangeRole(int id, JsonPatchDocument<Role> role)
         {
-            if (_docUserRepository.RoleNotFound(id)) return NotFound();
-            role.RoleId = 0;
-            var existingRole = await _docUserRepository.GetRoleAsync(id);
-            _docUserRepository.ChangeRoleInDb(role, existingRole);
+            if (_docUserRepository.DocumentNotFound(id)) return NotFound();
 
-            return Ok(role);
+            var updatedRole = await _docUserRepository.ChangeRoleInDb(id, role);
+            return Ok(updatedRole);
         }
 
         [HttpDelete("{id}")]
