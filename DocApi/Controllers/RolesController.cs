@@ -53,6 +53,7 @@ namespace DocApi.Controllers
             if (_docUserRepository.DocumentNotFound(id)) return NotFound();
 
             var updatedRole = await _docUserRepository.ChangeRoleInDb(id, role);
+
             return Ok(updatedRole);
         }
 

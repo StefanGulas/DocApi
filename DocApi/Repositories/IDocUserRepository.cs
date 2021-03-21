@@ -13,14 +13,14 @@ namespace DocApi.Repositories
         public bool Save();
         public bool DocumentNotFound(int id);
         public void AddDocument(Document document);
-        void ChangeDocumentInDb(Document document, Document existingDocument);
+        public Task<JsonPatchDocument<Document>> ChangeDocumentInDb(int id, JsonPatchDocument<Document> document); 
         void DeleteDocumentInDb(Document document);
 
         Task<IEnumerable<User>> GetUsersAsync();
         public Task<User> GetUserAsync(int id);
         bool UserNotFound(int id);
         void AddUser(Entities.User user);
-        void ChangeUserInDb(User user, User existingUser);
+        public Task<JsonPatchDocument<User>> ChangeUserInDb(int id, JsonPatchDocument<User> user);
         void DeleteUserInDb(User user);
 
         Task<IEnumerable<Role>> GetRolesAsync();

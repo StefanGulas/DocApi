@@ -52,16 +52,26 @@ namespace DocApi.Repositories
             _context.SaveChanges();
 
         }
-        public void ChangeDocumentInDb(Document document, Document existingDocument)
-        {
-            existingDocument.Id = document.Id;
-            if (document.Name is string) existingDocument.Name = document.Name;
-            if (document.Größe > 0) existingDocument.Größe = document.Größe;
-            if (document.Typ is string) existingDocument.Typ = document.Typ;
-            if (document.UserId > 0) existingDocument.UserId = document.UserId;
+        //public void ChangeDocumentInDb(Document document, Document existingDocument)
+        //{
+        //    existingDocument.Id = document.Id;
+        //    if (document.Name is string) existingDocument.Name = document.Name;
+        //    if (document.Größe > 0) existingDocument.Größe = document.Größe;
+        //    if (document.Typ is string) existingDocument.Typ = document.Typ;
+        //    if (document.UserId > 0) existingDocument.UserId = document.UserId;
 
-            _context.Update(document);
-            _context.SaveChanges();
+        //    _context.Update(document);
+        //    _context.SaveChanges();
+        //}
+        public async Task<JsonPatchDocument<Document>> ChangeDocumentInDb(int id, JsonPatchDocument<Document> document)
+        {
+            var existingDocument = await _context.Documents.FindAsync(id);
+            if (existingDocument != null)
+            {
+                document.ApplyTo(existingDocument);
+                _context.SaveChanges();
+            }
+            return document;
         }
 
         public void DeleteDocumentInDb(Document document)
@@ -106,17 +116,15 @@ namespace DocApi.Repositories
         {
             return (_context.SaveChanges() > 0);
         }
-        public void ChangeUserInDb(User user, User existingUser)
+        public async Task<JsonPatchDocument<User>> ChangeUserInDb(int id, JsonPatchDocument<User> user)
         {
-            existingUser.Id = user.Id;
-            if (user.Anrede is string) existingUser.Anrede = user.Anrede;
-            if (user.Vorname is string) existingUser.Vorname = user.Vorname;
-            if (user.Nachname is string) existingUser.Nachname = user.Nachname;
-            if (user.Password is string) existingUser.Password = user.Password;
-            if (user.RoleId > 0) existingUser.RoleId = user.RoleId;
-            
-            //_context.Update(existingUser);
-            _context.SaveChanges();
+            var existingUser = await _context.Users.FindAsync(id);
+            if (existingUser != null)
+            {
+                user.ApplyTo(existingUser);
+                _context.SaveChanges();
+            }
+            return user;
         }
 
         public void DeleteUserInDb(User user)

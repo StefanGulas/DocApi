@@ -1,5 +1,6 @@
 ﻿using DocApi.Entities;
 using DocApi.Repositories;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -53,15 +54,14 @@ namespace DocApi.Controllers
             }      
             return Ok();
         }
-        [HttpPut("{id}")]
-        public async Task<ActionResult> ChangeDocument(int id, Document document)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> ChangeDocument(int id, JsonPatchDocument<Document> document)
         {
             if (_docUserRepository.DocumentNotFound(id)) return NotFound();
-            document.Id = 0;
-            var existingDocument = await _docUserRepository.GetDocumentAsync(id);
-            _docUserRepository.ChangeDocumentInDb(document, existingDocument);
 
-            return NoContent();
+            var updatedDocument = await _docUserRepository.ChangeDocumentInDb(id, document);
+
+            return Ok(document);
         }
 
 
