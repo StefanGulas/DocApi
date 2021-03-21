@@ -52,17 +52,7 @@ namespace DocApi.Repositories
             _context.SaveChanges();
 
         }
-        //public void ChangeDocumentInDb(Document document, Document existingDocument)
-        //{
-        //    existingDocument.Id = document.Id;
-        //    if (document.Name is string) existingDocument.Name = document.Name;
-        //    if (document.Größe > 0) existingDocument.Größe = document.Größe;
-        //    if (document.Typ is string) existingDocument.Typ = document.Typ;
-        //    if (document.UserId > 0) existingDocument.UserId = document.UserId;
 
-        //    _context.Update(document);
-        //    _context.SaveChanges();
-        //}
         public async Task<JsonPatchDocument<Document>> ChangeDocumentInDb(int id, JsonPatchDocument<Document> document)
         {
             var existingDocument = await _context.Documents.FindAsync(id);
